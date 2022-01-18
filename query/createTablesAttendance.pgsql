@@ -1,13 +1,12 @@
 -- CREATE DATABASE Attendance;
 
-DROP TABLE IF EXISTS "Administrador";
-DROP TABLE IF EXISTS "Personal";
-DROP TABLE IF EXISTS "Docencia Misional";
-DROP TABLE IF EXISTS "Curso";
-DROP TABLE IF EXISTS "Sede";
-DROP TABLE IF EXISTS "Estudiante";
-DROP TABLE IF EXISTS "TipoAsistente";
-DROP TABLE IF EXISTS "Estudiante";
+DROP TABLE IF EXISTS "Administrador" CASCADE;
+DROP TABLE IF EXISTS "Personal" CASCADE;
+DROP TABLE IF EXISTS "Docencia Misional" CASCADE;
+DROP TABLE IF EXISTS "Curso" CASCADE;
+DROP TABLE IF EXISTS "Sede" CASCADE;
+DROP TABLE IF EXISTS "Estudiante" CASCADE;
+DROP TABLE IF EXISTS "TipoAsistente" CASCADE;
 DROP TABLE IF EXISTS "AsistenciaSede";
 DROP TABLE IF EXISTS "Matricula";
 
@@ -35,7 +34,7 @@ CREATE TABLE "TipoAsistente" (
 CREATE TABLE "Personal" (
   "ccP" int PRIMARY KEY,
   "ContraseñaP" varchar(8) NOT NULL,
-  "SalarioP" money CONSTRAINT positive_sentDM CHECK("SalarioDM" > 0::money),
+  "SalarioP" money CONSTRAINT positive_sentP CHECK("SalarioP" > 0::money),
   "EPS_P" varchar(15),
   "ARL_P" varchar(15),
   "Nombre_P" varchar(15) NOT NULL,
@@ -93,7 +92,7 @@ CREATE TABLE "Matricula" (
 );
 
 CREATE TABLE "AsistenciaSede" (
-  "idAsistentencia" serial PRIMARY KEY,
+  "idAsistencia" serial PRIMARY KEY,
   "HoraAst" time NOT NULL,
   "FechaAst" date NOT NULL,
   "CodigoEstudiante" int,
@@ -107,7 +106,7 @@ CREATE TABLE "AsistenciaSede" (
       REFERENCES "Personal"("ccP"),
   CONSTRAINT "FK_AsistenciaSede.CodigoEstudiante"
     FOREIGN KEY ("CodigoEstudiante")
-      REFERENCES "Estudiante"("CodigoEstudiante"),
+      REFERENCES "Estudiante"("CodigoEstudiante")
 );
 
 -- DELETE RECORDS FOR TESTING
@@ -147,11 +146,11 @@ WHERE "idAdmin" = 3246237;
 
 -- RESTART SERIAL FIELDS FOR TESTING
 
-ALTER SEQUENCE "Sede" "idSede" RESTART;
+ALTER SEQUENCE Sede idSede RESTART;
 
-ALTER SEQUENCE "Docencia Misional" "idDM" RESTART;
+ALTER SEQUENCE Docencia Misional idDM RESTART;
 
-ALTER SEQUENCE "AsistenciaSede" "idAsistentencia" RESTART;
+ALTER SEQUENCE AsistenciaSede idAsistencia RESTART;
 
 
 -- INSERT RECORDS FOR TESTING
@@ -194,12 +193,12 @@ INSERT INTO "Estudiante" ("CodigoEstudiante", "ContraseñaEst", "DireccionEst", 
   (1744933, '12344', 'cRA 50', 'Jorge', 'Mayor',3);
 
 INSERT INTO "Matricula" ("CodigoEstudiante", "CodigoCurso", "HoraMatricula", "FechaMatricula") VALUES
-  (1744936, '76002M', '24:00:00'. '2022-01-08'),
-  (1744936, '76003M', '24:01:00'. '2022-01-08'),
-  (1744936, '76004M', '24:02:00'. '2022-01-08'),
-  (1744934, '76002M', '24:01:00'. '2022-01-09'),
-  (1744934, '76004M', '24:02:00'. '2022-01-10'),
-  (1744933, '76004M', '24:02:00'. '2022-01-11');
+  (1744936, '76002M', '23:00:00', '2022-01-08'),
+  (1744936, '76003M', '23:01:00', '2022-01-08'),
+  (1744936, '76004M', '23:02:00', '2022-01-08'),
+  (1744934, '76002M', '23:01:00', '2022-01-09'),
+  (1744934, '76004M', '23:02:00', '2022-01-10'),
+  (1744933, '76004M', '23:02:00', '2022-01-11');
 
 INSERT INTO "AsistenciaSede" ("HoraAst", "FechaAst", "CodigoEstudiante", "ccP", "idSede") VALUES
   ('24:00:00', '2022-02-08', 1744936, NULL, 1),
