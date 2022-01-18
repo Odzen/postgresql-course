@@ -109,17 +109,20 @@ CREATE TABLE "AsistenciaSede" (
       REFERENCES "Estudiante"("CodigoEstudiante")
 );
 
+-- RESTART SERIAL FIELDS FOR TESTING
+
+-- ALTER SEQUENCE <tablename>_<id>_seq RESTART WITH 1
+
+ALTER SEQUENCE "Sede_idSede_seq" RESTART;
+
+ALTER SEQUENCE "Docencia Misional_idDM_seq" RESTART;
+
+ALTER SEQUENCE "AsistenciaSede_idAsistencia_seq" RESTART;
+
+
 -- DELETE RECORDS FOR TESTING
 
 TRUNCATE  "Administrador","Sede","TipoAsistente","Personal", "Docencia Misional", "Curso", "Matricula","AsistenciaSede"  CASCADE;
-
--- RESTART SERIAL FIELDS FOR TESTING
-
-ALTER SEQUENCE Sede idSede RESTART;
-
-ALTER SEQUENCE Docencia Misional idDM RESTART;
-
-ALTER SEQUENCE AsistenciaSede idAsistencia RESTART;
 
 
 -- INSERT RECORDS FOR TESTING
