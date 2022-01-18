@@ -111,38 +111,7 @@ CREATE TABLE "AsistenciaSede" (
 
 -- DELETE RECORDS FOR TESTING
 
-DELETE FROM "Administrador"
-WHERE "idAdmin" = 543556;
-DELETE FROM "Administrador"
-WHERE "idAdmin" = 234521;
-DELETE FROM "Administrador"
-WHERE "idAdmin" = 789182;
-
-DELETE FROM "Sede"
-WHERE "idAdmin" = 543556;
-DELETE FROM "Sede"
-WHERE "idAdmin" = 234521;
-DELETE FROM "Sede"
-WHERE "idAdmin" = 789182;
-
-DELETE FROM "Estudiante"
-WHERE "CodigoEstudiante" = 1744936;
-DELETE FROM "Estudiante"
-WHERE "CodigoEstudiante" = 1744934;
-
-DELETE FROM "No Misional"
-WHERE "ccNM" = 1005869667;
-DELETE FROM "No Misional"
-WHERE "ccNM" = 121243254;
-
-DELETE FROM "Docencia Misional"
-WHERE "ccDM" = 3245654;
-DELETE FROM "Docencia Misional"
-WHERE "ccDM" = 1212432;
-
-DELETE FROM "Administrador"
-WHERE "idAdmin" = 3246237;
-
+TRUNCATE  "Administrador","Sede","TipoAsistente","Personal", "Docencia Misional", "Curso", "Matricula","AsistenciaSede"  CASCADE;
 
 -- RESTART SERIAL FIELDS FOR TESTING
 
