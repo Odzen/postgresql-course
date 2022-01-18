@@ -159,10 +159,10 @@ INSERT INTO "Curso" ("CodigoCurso", "NombreCurso", "NumeroCreditosCurso", "idDM"
   ('76003M', 'Bases de Datos', 3, 1),
   ('76004M', 'FADA', 2, 1);
 
-INSERT INTO "Estudiante" ("CodigoEstudiante", "ContraseñaEst", "DireccionEst", "NombreEst", "ApellidoEst","idTipo") VALUES 
-  (1744936, '12346', 'cRA 50', 'Juan', 'Velasquez',3),
-  (1744934, '12345', 'cRA 50', 'Jorge', 'Mayor',3),
-  (1744933, '12344', 'cRA 50', 'Jorge', 'Mayor',3);
+INSERT INTO "Estudiante" ("CodigoEstudiante", "ContraseñaEst", "DireccionEst", "NombreEst", "ApellidoEst") VALUES 
+  (1744936, '12346', 'cRA 50', 'Juan', 'Velasquez'),
+  (1744934, '12345', 'cRA 50', 'Jorge', 'Mayor'),
+  (1744933, '12344', 'cRA 50', 'Jorge', 'Mayor');
 
 INSERT INTO "Matricula" ("CodigoEstudiante", "CodigoCurso", "HoraMatricula", "FechaMatricula") VALUES
   (1744936, '76002M', '23:00:00', '2022-01-08'),
