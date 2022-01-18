@@ -27,21 +27,19 @@ CREATE TABLE "Sede" (
       REFERENCES "Administrador"("idAdmin")
 );
 
-
 CREATE TABLE "TipoAsistente" (
   "idTipo" int PRIMARY KEY CHECK ("idTipo"=1 OR "idTipo"=2 OR "idTipo"=3),
   "tipoAsistente" varchar(5) UNIQUE NOT NULL
 );
 
-
 CREATE TABLE "Personal" (
   "ccP" int PRIMARY KEY,
-  "ContraseñaDM" varchar(8) NOT NULL,
-  "SalarioDM" money CONSTRAINT positive_sentDM CHECK("SalarioDM" > 0::money),
-  "EPS_DM" varchar(15),
-  "ARL_DM" varchar(15),
-  "Nombre_DM" varchar(15) NOT NULL,
-  "Apellido_DM" varchar(15) NOT NULL,
+  "ContraseñaP" varchar(8) NOT NULL,
+  "SalarioP" money CONSTRAINT positive_sentDM CHECK("SalarioDM" > 0::money),
+  "EPS_P" varchar(15),
+  "ARL_P" varchar(15),
+  "Nombre_P" varchar(15) NOT NULL,
+  "Apellido_P" varchar(15) NOT NULL,
   "idTipo" int NOT NULL CHECK ("idTipo"=1 OR "idTipo"=2),
   CONSTRAINT "FK_P.idTipo"
     FOREIGN KEY ("idTipo")
@@ -58,9 +56,8 @@ CREATE TABLE "Docencia Misional" (
       REFERENCES "Personal"("ccP")
 );
 
-
 CREATE TABLE "Curso" (
-  "CodigoCurso" int PRIMARY KEY,
+  "CodigoCurso" varchar(15) PRIMARY KEY,
   "NombreCurso" varchar(15) UNIQUE NOT NULL,
   "NumeroCreditosCurso" int NOT NULL,
   "idDM" int NOT NULL,
@@ -75,7 +72,7 @@ CREATE TABLE "Estudiante" (
   "DireccionEst" varchar(20),
   "NombreEst" varchar(20) NOT NULL,
   "ApellidoEst" varchar(20) NOT NULL,
-  "idTipo" int NOT NULL DEFAULT 1,
+  "idTipo" int NOT NULL DEFAULT 3,
   CONSTRAINT "FK_Estudiante.idTipo"
     FOREIGN KEY ("idTipo")
       REFERENCES "TipoAsistente"("idTipo")
@@ -83,7 +80,7 @@ CREATE TABLE "Estudiante" (
 
 CREATE TABLE "Matricula" (
   "CodigoEstudiante" int,
-  "CodigoCurso" int,
+  "CodigoCurso" varchar(15),
   "HoraMatricula" time NOT NULL,
   "FechaMatricula" date NOT NULL,
   PRIMARY KEY ("CodigoEstudiante", "CodigoCurso"),
@@ -94,7 +91,6 @@ CREATE TABLE "Matricula" (
     FOREIGN KEY ("CodigoCurso")
       REFERENCES "Curso"("CodigoCurso")
 );
-
 
 CREATE TABLE "AsistenciaSede" (
   "idAsistentencia" serial PRIMARY KEY,
@@ -114,8 +110,6 @@ CREATE TABLE "AsistenciaSede" (
       REFERENCES "Estudiante"("CodigoEstudiante"),
 );
 
-
-
 -- DELETE RECORDS FOR TESTING
 
 DELETE FROM "Administrador"
@@ -125,15 +119,12 @@ WHERE "idAdmin" = 234521;
 DELETE FROM "Administrador"
 WHERE "idAdmin" = 789182;
 
-
 DELETE FROM "Sede"
 WHERE "idAdmin" = 543556;
 DELETE FROM "Sede"
 WHERE "idAdmin" = 234521;
 DELETE FROM "Sede"
 WHERE "idAdmin" = 789182;
-
-
 
 DELETE FROM "Estudiante"
 WHERE "CodigoEstudiante" = 1744936;
@@ -150,12 +141,11 @@ WHERE "ccDM" = 3245654;
 DELETE FROM "Docencia Misional"
 WHERE "ccDM" = 1212432;
 
-
 DELETE FROM "Administrador"
 WHERE "idAdmin" = 3246237;
 
--- RESTART SERIAL FIELDS FOR TESTING
 
+-- RESTART SERIAL FIELDS FOR TESTING
 
 ALTER SEQUENCE "Sede" "idSede" RESTART;
 
@@ -164,10 +154,7 @@ ALTER SEQUENCE "Docencia Misional" "idDM" RESTART;
 ALTER SEQUENCE "AsistenciaSede" "idAsistentencia" RESTART;
 
 
-
-
 -- INSERT RECORDS FOR TESTING
-
 
 INSERT INTO "Administrador" ("idAdmin", "NombreAdmin", "ContraseñaAdmin") VALUES
   (543556, 'Admin1', '32423421'), 
@@ -186,32 +173,42 @@ INSERT INTO "TipoAsistente" ("idTipo", "tipoAsistente") VALUES
   (2, 'DM'),
   (3, 'Est');
 
-INSERT INTO "Estudiante" ("CodigoEstudiante", "ContraseñaEst", "DireccionEst", "NombreEst", "ApellidoEst") VALUES 
-  (1744936, '1234', 'cRA 50', 'Juna', 'Velasquez'),
-  (1744934, '123324', 'cRA 50', 'Jorge', 'Mayor');
+INSERT INTO "Personal" ("ccP", "ContraseñaP", "SalarioP", "EPS_P", "ARL_P", "Nombre_P", "Apellido_P", "idTipo") VALUES
+  (4848481, '1234s',1000,'SURA','SURA', 'Jefferson', 'Pena', 2),
+  (4848482, '1234x',2000,'SOS','SOS', 'Jaime', 'Garzon', 2),
+  (4848483, '1234y',590,'Sanitas','Sanitas', 'Alvaro', 'Uribe', 1),
+  (4848484, '1234y',590,'Sanitas','Sanitas', 'Gustavo', 'Petro', 1);
 
-INSERT INTO "No Misional" ("ccNM", "ContraseñaNM", "NombreNM", "ApellidoNM") VALUES
-  (1005869667, '1234s', 'Jefferson', 'Osorio'),
-  (121243254, '12ddfg', 'Francisco', 'Gonzalez');
+INSERT INTO "Docencia Misional" ("Departamento_DM", "Profesion_DM", "ccP") VALUES
+  ('Sistemas', 'Ingeniero', 4848481),
+  ('Matematicas', 'Matematico', 4848482);
 
-INSERT INTO "Docencia Misional" ("ccDM", "ContraseñaDM", "Nombre_DM", "Apellido_DM") VALUES
-  (3245654, '1234s', 'Marcos', 'FF'),
-  (1212432, '12asdd', 'Franco', 'A');
+INSERT INTO "Curso" ("CodigoCurso", "NombreCurso", "NumeroCreditosCurso", "idDM") VALUES
+  ('76002M', 'Matematicas', 3, 2),
+  ('76003M', 'Bases de Datos', 3, 1),
+  ('76004M', 'FADA', 2, 1);
 
+INSERT INTO "Estudiante" ("CodigoEstudiante", "ContraseñaEst", "DireccionEst", "NombreEst", "ApellidoEst","idTipo") VALUES 
+  (1744936, '12346', 'cRA 50', 'Juan', 'Velasquez',3),
+  (1744934, '12345', 'cRA 50', 'Jorge', 'Mayor',3),
+  (1744933, '12344', 'cRA 50', 'Jorge', 'Mayor',3);
 
-INSERT INTO "Administrador" ("idAdmin", "NombreAdmin", "ContraseñaAdmin") VALUES
-  (3246237, 'Carlos', '32423421');
+INSERT INTO "Matricula" ("CodigoEstudiante", "CodigoCurso", "HoraMatricula", "FechaMatricula") VALUES
+  (1744936, '76002M', '24:00:00'. '2022-01-08'),
+  (1744936, '76003M', '24:01:00'. '2022-01-08'),
+  (1744936, '76004M', '24:02:00'. '2022-01-08'),
+  (1744934, '76002M', '24:01:00'. '2022-01-09'),
+  (1744934, '76004M', '24:02:00'. '2022-01-10'),
+  (1744933, '76004M', '24:02:00'. '2022-01-11');
 
-INSERT INTO "Sede" ("NombreSede", "UbicacionSede", "idAdmin") VALUES
-  ('Melendez', 'asdasd', '3246237');
-
-SELECT * FROM "Sede";
-
-
-INSERT INTO "AsistenciaSede" ("idAsistente","idSede", "HoraAst", "FechaAst", "idTipo") VALUES
-  (3245654,18, '24:00:00', '1999-01-08', 2),
-  (1005869667,18, '24:00:00', '1999-01-08',1),
-  (1744936,18, '24:00:00', '1999-01-08',3);
+INSERT INTO "AsistenciaSede" ("HoraAst", "FechaAst", "CodigoEstudiante", "ccP", "idSede") VALUES
+  ('24:00:00', '2022-02-08', 1744936, NULL, 1),
+  ('24:00:00', '2022-02-08', NULL, 4848481, 1),
+  ('24:00:00', '2022-08-08', NULL, 4848482, 2),
+  ('24:00:00', '2022-12-08', NULL, 4848484, 4),
+  ('24:00:00', '2022-12-08', NULL, 4848483, 5),
+  ('24:00:00', '2022-05-08', 1744933, NULL, 4),
+  ('24:00:00', '2022-05-08', 1744934, NULL, 3);
 
 
 -- SELECT FOR CHECK THE CONTENT OF EACH TABLE TESTING
